@@ -1,0 +1,12 @@
+{
+  "name": "text-render",
+  "version": "1.0.0",
+  "main": "text-service.js",
+  "scripts": {
+    "start": "node text-service.js"
+  },
+  "dependencies": {
+    "express": "^4.21.2",
+    "puppeteer": "^24.0.0"
+  }
+}
