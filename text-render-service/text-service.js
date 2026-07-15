@@ -9,18 +9,31 @@ const puppeteer = require("puppeteer");
 const app = express();
 app.use(express.json());
 
+// دالة لحماية النص داخل HTML
+function escapeHtml(str) {
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
 app.post("/render", async (req, res) => {
   const text = req.body.text || "";
 
   // تشكيل النص العربي ليظهر الحروف متصلة
   let renderedText = text;
 
-if (/[\u0600-\u06FF]/.test(text)) {
-  renderedText =
-    (ArabicReshaper.reshape && ArabicReshaper.reshape(text)) ||
-    (typeof ArabicReshaper === "function" && ArabicReshaper(text)) ||
-    text;
-}
+  if (/[\u0600-\u06FF]/.test(text)) {
+    renderedText =
+      (ArabicReshaper.reshape && ArabicReshaper.reshape(text)) ||
+      (typeof ArabicReshaper === "function" && ArabicReshaper(text)) ||
+      text;
+  }
+
+  // حماية النص قبل إدخاله في HTML
+  const safeText = escapeHtml(renderedText);
 
   const browser = await puppeteer.launch({
     headless: "new",
@@ -47,8 +60,8 @@ if (/[\u0600-\u06FF]/.test(text)) {
     .toString("base64");
 
   const symbols1Font = fs
-  .readFileSync(path.join(__dirname, "fonts", "NotoSansSymbols-Regular.ttf"))
-  .toString("base64");
+    .readFileSync(path.join(__dirname, "fonts", "NotoSansSymbols-Regular.ttf"))
+    .toString("base64");
 
   await page.setContent(`
     <html>
@@ -86,32 +99,32 @@ if (/[\u0600-\u06FF]/.test(text)) {
       }
 
       #name {
-  font-family:
-    'NotoSymbols1',
-    'NotoArabic',
-    'NotoMath',
-    'NotoSymbols2',
-    'NotoSans',
-    sans-serif;
+        font-family:
+          'NotoSymbols1',
+          'NotoArabic',
+          'NotoMath',
+          'NotoSymbols2',
+          'NotoSans',
+          sans-serif;
 
-  font-size: 60px;
-  font-weight: 600;
-  color: black;
+        font-size: 60px;
+        font-weight: 600;
+        color: black;
 
-  white-space: nowrap;
-  display: inline-block;
+        white-space: nowrap;
+        display: inline-block;
 
-  direction: rtl;
-  text-align: right;
+        direction: rtl;
+        text-align: right;
 
-  font-variant-ligatures: normal;
-  font-feature-settings: "liga" 1, "calt" 1;
-}
+        font-variant-ligatures: normal;
+        font-feature-settings: "liga" 1, "calt" 1;
+      }
     </style>
     </head>
 
     <body>
-      <div id="name" dir="rtl">${renderedText}</div>
+      <div id="name" dir="rtl">${safeText}</div>
     </body>
     </html>
   `);
@@ -122,6 +135,12 @@ if (/[\u0600-\u06FF]/.test(text)) {
   });
 
   const element = await page.$("#name");
+
+  // لو العنصر لم يتم إنشاؤه
+  if (!element) {
+    await browser.close();
+    return res.status(500).send("Failed to render text element");
+  }
 
   const buffer = await element.screenshot({
     omitBackground: true
