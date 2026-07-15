@@ -77,24 +77,31 @@ if (/[\u0600-\u06FF]/.test(text)) {
       }
 
       #name {
-        font-family:
-          'NotoMath',
-          'NotoSymbols2',
-          'NotoArabic',
-          'NotoSans',
-          sans-serif;
+  font-family:
+    'NotoArabic',
+    'NotoMath',
+    'NotoSymbols2',
+    'NotoSans',
+    sans-serif;
 
-        font-size: 60px;
-        font-weight: 600;
-        color: black;
-        white-space: nowrap;
-        display: inline-block;
-      }
+  font-size: 60px;
+  font-weight: 600;
+  color: black;
+
+  white-space: nowrap;
+  display: inline-block;
+
+  direction: rtl;
+  text-align: right;
+
+  font-variant-ligatures: normal;
+  font-feature-settings: "liga" 1, "calt" 1;
+}
     </style>
     </head>
 
     <body>
-      <div id="name">${renderedText}</div>
+      <div id="name" dir="rtl">${renderedText}</div>
     </body>
     </html>
   `);
