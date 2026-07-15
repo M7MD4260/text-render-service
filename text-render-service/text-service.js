@@ -1,5 +1,4 @@
 const reshape = require("arabic-reshaper");
-const bidi = require("bidi-js");
 
 const fs = require("fs");
 const path = require("path");
@@ -17,7 +16,13 @@ app.post("/render", async (req, res) => {
 
   if (/[\u0600-\u06FF]/.test(text)) {
     const reshaped = reshape(text);
-    renderedText = bidi.getEmbeddingLevels(reshaped, "rtl").text;
+    const reshape = require("arabic-reshaper");
+
+    let renderedText = text;
+    
+    if (/[\u0600-\u06FF]/.test(text)) {
+      renderedText = reshape(text);
+    }
   }
 
   const browser = await puppeteer.launch({
