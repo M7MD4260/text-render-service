@@ -32,6 +32,8 @@ const symbolsFont = fs.readFileSync(
 const mathFont = fs.readFileSync(
   path.join(__dirname, "fonts", "NotoSansMath-Regular.ttf")
 ).toString("base64");
+
+  const isArabic = /[\u0600-\u06FF]/.test(text);
   
   await page.setContent(`
     <html>
@@ -80,7 +82,7 @@ const mathFont = fs.readFileSync(
     </head>
     
     <body>
-      <div id="name">${text}</div>
+      <div id="name" dir="${isArabic ? "rtl" : "ltr"}">${text}</div>
     </body>
     </html>
     `);
