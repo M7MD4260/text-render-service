@@ -14,7 +14,7 @@ app.post("/render", async (req, res) => {
 
   const page = await browser.newPage();
 
-await page.setContent(`
+  await page.setContent(`
   <html>
   <head>
   <style>
@@ -74,7 +74,7 @@ await page.setContent(`
       "Noto Sans Symbols",
       "Noto Sans Math",
       sans-serif;
-  
+
     font-size: 60px;
     font-weight: 600;
     color: black;
@@ -89,10 +89,11 @@ await page.setContent(`
   </html>
   `);
 
+  // مهم جدًا
   await page.evaluate(async () => {
-  await document.fonts.ready;
-});
-  
+    await document.fonts.ready;
+  });
+
   const element = await page.$("#name");
 
   const buffer = await element.screenshot({
