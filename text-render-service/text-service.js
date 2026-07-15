@@ -27,16 +27,6 @@ await page.setContent(`
     font-family: 'Noto Sans Arabic';
     src: url('file://${process.cwd()}/fonts/NotoNaskhArabic-Regular.ttf');
   }
-
-  @font-face {
-  font-family: 'Noto Naskh Arabic';
-  src: url('file://${process.cwd()}/fonts/NotoNaskhArabic-Regular.ttf');
-}
-
-@font-face {
-  font-family: 'Noto Sans CJK TC';
-  src: url('file://${process.cwd()}/fonts/NotoSansCJKtc-Regular.ttf');
-}
   
   @font-face {
     font-family: 'Noto Sans JP';
@@ -50,7 +40,7 @@ await page.setContent(`
   
   @font-face {
     font-family: 'Noto Sans Symbols 2';
-    src: url('file://${process.cwd()}/fonts/NotoSansSymbols2-Regular.ttf');
+    src: url('file://${process.cwd()}/fonts/NotoSansSymbols-Regular.ttf');
   }
 
   @font-face {
@@ -114,6 +104,10 @@ await page.setContent(`
   </html>
   `);
 
+  await page.evaluate(async () => {
+  await document.fonts.ready;
+});
+  
   const element = await page.$("#name");
 
   const buffer = await element.screenshot({
