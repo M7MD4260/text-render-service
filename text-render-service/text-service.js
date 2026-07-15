@@ -27,6 +27,16 @@ await page.setContent(`
     font-family: 'Noto Sans Arabic';
     src: url('file://${process.cwd()}/fonts/NotoNaskhArabic-Regular.ttf');
   }
+
+  @font-face {
+  font-family: 'Noto Naskh Arabic';
+  src: url('file://${process.cwd()}/fonts/NotoNaskhArabic-Regular.ttf');
+}
+
+@font-face {
+  font-family: 'Noto Sans CJK TC';
+  src: url('file://${process.cwd()}/fonts/NotoSansCJKtc-Regular.ttf');
+}
   
   @font-face {
     font-family: 'Noto Sans JP';
@@ -40,6 +50,11 @@ await page.setContent(`
   
   @font-face {
     font-family: 'Noto Sans Symbols 2';
+    src: url('file://${process.cwd()}/fonts/NotoSansSymbols2-Regular.ttf');
+  }
+
+  @font-face {
+    font-family: 'Noto Sans Symbols';
     src: url('file://${process.cwd()}/fonts/NotoSansSymbols2-Regular.ttf');
   }
   
@@ -56,11 +71,33 @@ await page.setContent(`
   #name {
     font-family:
       "Noto Sans",
-      "Noto Sans Arabic",
-      "Noto Sans JP",
+      "Noto Naskh Arabic",
+      "Noto Sans CJK TC",
       "Noto Color Emoji",
+      "Noto Sans Symbols",
       "Noto Sans Symbols 2",
       "Noto Sans Math",
+      "Noto Sans Armenian",
+      "Noto Sans Balinese",
+      "Noto Sans Bengali",
+      "Noto Sans Devanagari",
+      "Noto Sans Ethiopic",
+      "Noto Sans Georgian",
+      "Noto Sans Gujarati",
+      "Noto Sans Gurmukhi",
+      "Noto Sans Hebrew",
+      "Noto Sans Javanese",
+      "Noto Sans Kannada",
+      "Noto Sans Khmer",
+      "Noto Sans Lao",
+      "Noto Sans Mongolian",
+      "Noto Sans Myanmar",
+      "Noto Sans Oriya",
+      "Noto Sans Sinhala",
+      "Noto Sans Tamil",
+      "Noto Sans Thai",
+      "Noto Sans Tibetan",
+      "Noto Sans Tifinagh",
       sans-serif;
   
     font-size: 60px;
