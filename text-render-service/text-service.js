@@ -1,4 +1,4 @@
-const { reshape } = require("arabic-reshaper");
+const ArabicReshaper = require("arabic-reshaper");
 
 const fs = require("fs");
 const path = require("path");
@@ -16,7 +16,10 @@ app.post("/render", async (req, res) => {
   let renderedText = text;
 
 if (/[\u0600-\u06FF]/.test(text)) {
-  renderedText = reshape(text);
+  renderedText =
+    (ArabicReshaper.reshape && ArabicReshaper.reshape(text)) ||
+    (typeof ArabicReshaper === "function" && ArabicReshaper(text)) ||
+    text;
 }
 
   const browser = await puppeteer.launch({
