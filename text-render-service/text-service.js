@@ -47,6 +47,11 @@ await page.setContent(`
     font-family: 'Noto Sans Symbols';
     src: url('file://${process.cwd()}/fonts/NotoSansSymbols2-Regular.ttf');
   }
+
+  @font-face {
+  font-family: 'Symbola';
+  src: url('file://${process.cwd()}/fonts/Symbola.ttf');
+  }
   
   @font-face {
     font-family: 'Noto Sans Math';
@@ -60,13 +65,14 @@ await page.setContent(`
   
   #name {
     font-family:
+      "Symbola",
       "Noto Sans",
-      'Noto Sans Arabic',
-      'Noto Sans JP',
-      'Noto Color Emoji',
-      'Noto Sans Symbols 2',
-      'Noto Sans Symbols',
-      'Noto Sans Math',
+      "Noto Sans Arabic",
+      "Noto Sans JP",
+      "Noto Color Emoji",
+      "Noto Sans Symbols 2",
+      "Noto Sans Symbols",
+      "Noto Sans Math",
       sans-serif;
   
     font-size: 60px;
