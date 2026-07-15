@@ -20,9 +20,6 @@ if (/[\u0600-\u06FF]/.test(text)) {
     (ArabicReshaper.reshape && ArabicReshaper.reshape(text)) ||
     (typeof ArabicReshaper === "function" && ArabicReshaper(text)) ||
     text;
-
-  // عكس النص بعد التشكيل ليظهر متصلًا بشكل صحيح
-  renderedText = renderedText.split("").reverse().join("");
 }
 
   const browser = await puppeteer.launch({
