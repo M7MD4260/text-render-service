@@ -12,17 +12,11 @@ app.use(express.json());
 app.post("/render", async (req, res) => {
   const text = req.body.text || "";
 
+  // تشكيل النص العربي ليظهر الحروف متصلة
   let renderedText = text;
 
   if (/[\u0600-\u06FF]/.test(text)) {
-    const reshaped = reshape(text);
-    const reshape = require("arabic-reshaper");
-
-    let renderedText = text;
-    
-    if (/[\u0600-\u06FF]/.test(text)) {
-      renderedText = reshape(text);
-    }
+    renderedText = reshape(text);
   }
 
   const browser = await puppeteer.launch({
@@ -32,77 +26,77 @@ app.post("/render", async (req, res) => {
 
   const page = await browser.newPage();
 
-  const arabicFont = fs.readFileSync(
-  path.join(__dirname, "fonts", "NotoNaskhArabic-Regular.ttf")
-).toString("base64");
+  // تحميل الخطوط وتحويلها Base64
+  const arabicFont = fs
+    .readFileSync(path.join(__dirname, "fonts", "NotoNaskhArabic-Regular.ttf"))
+    .toString("base64");
 
-const sansFont = fs.readFileSync(
-  path.join(__dirname, "fonts", "NotoSans-Regular.ttf")
-).toString("base64");
+  const sansFont = fs
+    .readFileSync(path.join(__dirname, "fonts", "NotoSans-Regular.ttf"))
+    .toString("base64");
 
-const symbolsFont = fs.readFileSync(
-  path.join(__dirname, "fonts", "NotoSansSymbols2-Regular.ttf")
-).toString("base64");
+  const symbolsFont = fs
+    .readFileSync(path.join(__dirname, "fonts", "NotoSansSymbols2-Regular.ttf"))
+    .toString("base64");
 
-const mathFont = fs.readFileSync(
-  path.join(__dirname, "fonts", "NotoSansMath-Regular.ttf")
-).toString("base64");
+  const mathFont = fs
+    .readFileSync(path.join(__dirname, "fonts", "NotoSansMath-Regular.ttf"))
+    .toString("base64");
 
-  const isArabic = /[\u0600-\u06FF]/.test(text);
-  
   await page.setContent(`
     <html>
     <head>
+    <meta charset="UTF-8">
     <style>
-    @font-face {
-      font-family: 'NotoSans';
-      src: url(data:font/ttf;base64,${sansFont}) format('truetype');
-    }
-    
-    @font-face {
-      font-family: 'NotoArabic';
-      src: url(data:font/ttf;base64,${arabicFont}) format('truetype');
-    }
-    
-    @font-face {
-      font-family: 'NotoSymbols2';
-      src: url(data:font/ttf;base64,${symbolsFont}) format('truetype');
-    }
-    
-    @font-face {
-      font-family: 'NotoMath';
-      src: url(data:font/ttf;base64,${mathFont}) format('truetype');
-    }
-    
-    body {
-      margin: 0;
-      background: transparent;
-    }
-    
-    #name {
-  font-family:
-    'NotoMath',
-    'NotoSymbols2',
-    'NotoArabic',
-    'NotoSans',
-    sans-serif;
+      @font-face {
+        font-family: 'NotoSans';
+        src: url(data:font/ttf;base64,${sansFont}) format('truetype');
+      }
 
-  font-size: 60px;
-  font-weight: 600;
-  color: black;
-  white-space: nowrap;
-  display: inline-block;
-}
+      @font-face {
+        font-family: 'NotoArabic';
+        src: url(data:font/ttf;base64,${arabicFont}) format('truetype');
+      }
+
+      @font-face {
+        font-family: 'NotoSymbols2';
+        src: url(data:font/ttf;base64,${symbolsFont}) format('truetype');
+      }
+
+      @font-face {
+        font-family: 'NotoMath';
+        src: url(data:font/ttf;base64,${mathFont}) format('truetype');
+      }
+
+      body {
+        margin: 0;
+        background: transparent;
+      }
+
+      #name {
+        font-family:
+          'NotoMath',
+          'NotoSymbols2',
+          'NotoArabic',
+          'NotoSans',
+          sans-serif;
+
+        font-size: 60px;
+        font-weight: 600;
+        color: black;
+        white-space: nowrap;
+        display: inline-block;
+      }
     </style>
     </head>
-    
+
     <body>
       <div id="name">${renderedText}</div>
     </body>
     </html>
-    `);
+  `);
 
-  // مهم جدًا
+  // الانتظار حتى يتم تحميل الخطوط
   await page.evaluate(async () => {
     await document.fonts.ready;
   });
