@@ -1,3 +1,6 @@
+const fs = require("fs");
+const path = require("path");
+
 const express = require("express");
 const puppeteer = require("puppeteer");
 
@@ -14,80 +17,73 @@ app.post("/render", async (req, res) => {
 
   const page = await browser.newPage();
 
+  const arabicFont = fs.readFileSync(
+  path.join(__dirname, "fonts", "NotoNaskhArabic-Regular.ttf")
+).toString("base64");
+
+const sansFont = fs.readFileSync(
+  path.join(__dirname, "fonts", "NotoSans-Regular.ttf")
+).toString("base64");
+
+const symbolsFont = fs.readFileSync(
+  path.join(__dirname, "fonts", "NotoSansSymbols2-Regular.ttf")
+).toString("base64");
+
+const mathFont = fs.readFileSync(
+  path.join(__dirname, "fonts", "NotoSansMath-Regular.ttf")
+).toString("base64");
+  
   await page.setContent(`
-  <html>
-  <head>
-  <style>
-  @font-face {
-    font-family: 'Noto Sans';
-    src: url('file://${process.cwd()}/fonts/NotoSans-Regular.ttf');
-  }
-  
-  @font-face {
-    font-family: 'Noto Sans Arabic';
-    src: url('file://${process.cwd()}/fonts/NotoNaskhArabic-Regular.ttf');
-  }
-  
-  @font-face {
-    font-family: 'Noto Sans JP';
-    src: url('file://${process.cwd()}/fonts/NotoSansCJKtc-Regular.ttf');
-  }
-  
-  @font-face {
-    font-family: 'Noto Color Emoji';
-    src: url('file://${process.cwd()}/fonts/NotoColorEmoji-Regular.ttf');
-  }
-  
-  @font-face {
-    font-family: 'Noto Sans Symbols 2';
-    src: url('file://${process.cwd()}/fonts/NotoSansSymbols-Regular.ttf');
-  }
-
-  @font-face {
-    font-family: 'Noto Sans Symbols';
-    src: url('file://${process.cwd()}/fonts/NotoSansSymbols2-Regular.ttf');
-  }
-
-  @font-face {
-  font-family: 'Symbola';
-  src: url('file://${process.cwd()}/fonts/Symbola.ttf');
-  }
-  
-  @font-face {
-    font-family: 'Noto Sans Math';
-    src: url('file://${process.cwd()}/fonts/NotoSansMath-Regular.ttf');
-  }
-  
-  body {
-    margin: 0;
-    background: transparent;
-  }
-  
-  #name {
-    font-family:
-      "Symbola",
-      "Noto Sans",
-      "Noto Sans Arabic",
-      "Noto Sans JP",
-      "Noto Color Emoji",
-      "Noto Sans Symbols 2",
-      "Noto Sans Symbols",
-      "Noto Sans Math",
-      sans-serif;
-
-    font-size: 60px;
-    font-weight: 600;
-    color: black;
-    white-space: nowrap;
-    display: inline-block;
-  }
-  </style>
-  </head>
-  <body>
-    <div id="name">${text}</div>
-  </body>
-  </html>
-  `);
+    <html>
+    <head>
+    <style>
+    @font-face {
+      font-family: 'NotoSans';
+      src: url(data:font/ttf;base64,${sansFont}) format('truetype');
+    }
+    
+    @font-face {
+      font-family: 'NotoArabic';
+      src: url(data:font/ttf;base64,${arabicFont}) format('truetype');
+    }
+    
+    @font-face {
+      font-family: 'NotoSymbols2';
+      src: url(data:font/ttf;base64,${symbolsFont}) format('truetype');
+    }
+    
+    @font-face {
+      font-family: 'NotoMath';
+      src: url(data:font/ttf;base64,${mathFont}) format('truetype');
+    }
+    
+    body {
+      margin: 0;
+      background: transparent;
+    }
+    
+    #name {
+      font-family:
+        'NotoMath',
+        'NotoSymbols2',
+        'NotoArabic',
+        'NotoSans',
+        sans-serif;
+    
+      font-size: 60px;
+      font-weight: 600;
+      color: black;
+      white-space: nowrap;
+      display: inline-block;
+    }
+    </style>
+    </head>
+    
+    <body>
+      <div id="name">${text}</div>
+    </body>
+    </html>
+    `);
 
   // مهم جدًا
   await page.evaluate(async () => {
