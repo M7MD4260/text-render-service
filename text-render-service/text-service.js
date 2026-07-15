@@ -15,16 +15,62 @@ app.post("/render", async (req, res) => {
   const page = await browser.newPage();
 
   await page.setContent(`
-    <body style="margin:0;background:transparent">
-      <div id="name" style="
-        font-family:'Noto Sans','Noto Sans Arabic','Noto Sans JP','Noto Color Emoji';
-        font-size:60px;
-        font-weight:600;
-        color:black;
-        white-space:nowrap;
-      ">${text}</div>
+    <html>
+    <head>
+    <style>
+    @font-face {
+      font-family: 'NotoSans';
+      src: url('file://${process.cwd()}/fonts/NotoSans-Regular.ttf');
+    }
+    
+    @font-face {
+      font-family: 'NotoArabic';
+      src: url('file://${process.cwd()}/fonts/NotoNaskhArabic-Regular.ttf');
+    }
+    
+    @font-face {
+      font-family: 'NotoCJK';
+      src: url('file://${process.cwd()}/fonts/NotoSansCJKtc-Regular.ttf');
+    }
+    
+    @font-face {
+      font-family: 'NotoSymbols2';
+      src: url('file://${process.cwd()}/fonts/NotoSansSymbols2-Regular.ttf');
+    }
+    
+    @font-face {
+      font-family: 'NotoMath';
+      src: url('file://${process.cwd()}/fonts/NotoSansMath-Regular.ttf');
+    }
+    
+    body {
+      margin: 0;
+      background: transparent;
+    }
+    
+    #name {
+      font-family:
+        'NotoSans',
+        'NotoArabic',
+        'NotoCJK',
+        'NotoSymbols2',
+        'NotoMath',
+        sans-serif;
+    
+      font-size: 60px;
+      font-weight: 600;
+      color: black;
+      white-space: nowrap;
+      display: inline-block;
+    }
+    </style>
+    </head>
+    
+    <body>
+      <div id="name">${text}</div>
     </body>
-  `);
+    </html>
+    `);
 
   const element = await page.$("#name");
 
