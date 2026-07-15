@@ -59,6 +59,14 @@ app.post("/render", async (req, res) => {
     .readFileSync(path.join(__dirname, "fonts", "NotoSansMath-Regular.ttf"))
     .toString("base64");
 
+  const jpFont = fs
+  .readFileSync(path.join(__dirname, "fonts", "NotoSansJP-Regular.otf"))
+  .toString("base64");
+
+  const tibetanFont = fs
+  .readFileSync(path.join(__dirname, "fonts", "NotoSansTibetan-Regular.ttf"))
+  .toString("base64");
+
   const symbols1Font = fs
     .readFileSync(path.join(__dirname, "fonts", "NotoSansSymbols-Regular.ttf"))
     .toString("base64");
@@ -89,6 +97,16 @@ app.post("/render", async (req, res) => {
       }
 
       @font-face {
+        font-family: 'NotoJP';
+        src: url(data:font/otf;base64,${jpFont}) format('opentype');
+      }
+
+      @font-face {
+        font-family: 'NotoTibetan';
+        src: url(data:font/ttf;base64,${tibetanFont}) format('truetype');
+      }
+
+      @font-face {
         font-family: 'NotoSymbols1';
         src: url(data:font/ttf;base64,${symbols1Font}) format('truetype');
       }
@@ -100,10 +118,12 @@ app.post("/render", async (req, res) => {
 
       #name {
         font-family:
+          'NotoJP',
           'NotoSymbols1',
           'NotoArabic',
           'NotoMath',
           'NotoSymbols2',
+          'NotoTibetan',
           'NotoSans',
           sans-serif;
 
