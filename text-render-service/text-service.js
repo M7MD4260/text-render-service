@@ -118,13 +118,13 @@ app.post("/render", async (req, res) => {
 
       #name {
         font-family:
-          'NotoJP',
-          'NotoSymbols1',
-          'NotoArabic',
-          'NotoMath',
-          'NotoSymbols2',
-          'NotoTibetan',
-          'NotoSans',
+          'NotoJP',          /* ياباني وكاتاكانا وهيراغانا */
+          'NotoTibetan',    /* رموز التبت مثل ࿔ */
+          'NotoSymbols1',   /* رموز Unicode العامة */
+          'NotoSymbols2',   /* زخارف ورموز إضافية */
+          'NotoMath',       /* الرموز الرياضية */
+          'NotoArabic',     /* العربي */
+          'NotoSans',       /* إنجليزي ولاتيني */
           sans-serif;
 
         font-size: 60px;
