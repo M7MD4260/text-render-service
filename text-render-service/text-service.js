@@ -75,15 +75,19 @@ const mathFont = fs.readFileSync(
   font-size: 60px;
   font-weight: 600;
   color: black;
-  white-space: nowrap;
-  display: inline-block;
 
+  white-space: nowrap;
+
+  display: inline;
+
+  direction: rtl;
+  unicode-bidi: plaintext;
 }
     </style>
     </head>
     
     <body>
-      <div id="name" dir="${isArabic ? "rtl" : "ltr"}">${text}</div>
+      <div id="name">${text}</div>
     </body>
     </html>
     `);
