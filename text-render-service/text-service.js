@@ -65,19 +65,20 @@ const mathFont = fs.readFileSync(
     }
     
     #name {
-      font-family:
-        'NotoMath',
-        'NotoSymbols2',
-        'NotoArabic',
-        'NotoSans',
-        sans-serif;
-    
-      font-size: 60px;
-      font-weight: 600;
-      color: black;
-      white-space: nowrap;
-      display: inline-block;
-    }
+  font-family:
+    'NotoMath',
+    'NotoSymbols2',
+    'NotoArabic',
+    'NotoSans',
+    sans-serif;
+
+  font-size: 60px;
+  font-weight: 600;
+  color: black;
+  white-space: nowrap;
+  display: inline-block;
+
+}
     </style>
     </head>
     
