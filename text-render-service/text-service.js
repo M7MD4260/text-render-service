@@ -46,6 +46,10 @@ if (/[\u0600-\u06FF]/.test(text)) {
     .readFileSync(path.join(__dirname, "fonts", "NotoSansMath-Regular.ttf"))
     .toString("base64");
 
+  const symbols1Font = fs
+  .readFileSync(path.join(__dirname, "fonts", "NotoSansSymbols-Regular.ttf"))
+  .toString("base64");
+
   await page.setContent(`
     <html>
     <head>
@@ -71,6 +75,11 @@ if (/[\u0600-\u06FF]/.test(text)) {
         src: url(data:font/ttf;base64,${mathFont}) format('truetype');
       }
 
+      @font-face {
+        font-family: 'NotoSymbols1';
+        src: url(data:font/ttf;base64,${symbols1Font}) format('truetype');
+      }
+
       body {
         margin: 0;
         background: transparent;
@@ -78,6 +87,7 @@ if (/[\u0600-\u06FF]/.test(text)) {
 
       #name {
   font-family:
+    'NotoSymbols1',
     'NotoArabic',
     'NotoMath',
     'NotoSymbols2',
