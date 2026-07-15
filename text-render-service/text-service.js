@@ -1,3 +1,6 @@
+const ArabicReshaper = require("arabic-reshaper");
+const bidi = require("bidi-js");
+
 const fs = require("fs");
 const path = require("path");
 
@@ -9,6 +12,13 @@ app.use(express.json());
 
 app.post("/render", async (req, res) => {
   const text = req.body.text || "";
+
+  let renderedText = text;
+
+  if (/[\u0600-\u06FF]/.test(text)) {
+    const reshaped = ArabicReshaper.reshape(text);
+    renderedText = bidi.getEmbeddingLevels(reshaped, "rtl").text;
+  }
 
   const browser = await puppeteer.launch({
     headless: "new",
@@ -75,19 +85,14 @@ const mathFont = fs.readFileSync(
   font-size: 60px;
   font-weight: 600;
   color: black;
-
   white-space: nowrap;
-
-  display: inline;
-
-  direction: rtl;
-  unicode-bidi: plaintext;
+  display: inline-block;
 }
     </style>
     </head>
     
     <body>
-      <div id="name">${text}</div>
+      <div id="name">${renderedText}</div>
     </body>
     </html>
     `);
