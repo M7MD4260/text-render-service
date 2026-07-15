@@ -1,4 +1,4 @@
-const ArabicReshaper = require("arabic-reshaper");
+const reshape = require("arabic-reshaper");
 const bidi = require("bidi-js");
 
 const fs = require("fs");
@@ -16,7 +16,7 @@ app.post("/render", async (req, res) => {
   let renderedText = text;
 
   if (/[\u0600-\u06FF]/.test(text)) {
-    const reshaped = ArabicReshaper.reshape(text);
+    const reshaped = reshape(text);
     renderedText = bidi.getEmbeddingLevels(reshaped, "rtl").text;
   }
 
