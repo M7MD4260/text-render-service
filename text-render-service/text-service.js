@@ -1,4 +1,4 @@
-const reshape = require("arabic-reshaper");
+const { reshape } = require("arabic-reshaper");
 
 const fs = require("fs");
 const path = require("path");
@@ -15,9 +15,9 @@ app.post("/render", async (req, res) => {
   // تشكيل النص العربي ليظهر الحروف متصلة
   let renderedText = text;
 
-  if (/[\u0600-\u06FF]/.test(text)) {
-    renderedText = reshape(text);
-  }
+if (/[\u0600-\u06FF]/.test(text)) {
+  renderedText = reshape(text);
+}
 
   const browser = await puppeteer.launch({
     headless: "new",
