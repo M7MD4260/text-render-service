@@ -127,13 +127,13 @@ app.post("/render", async (req, res) => {
 
       #name {
         font-family:
-          'NotoEmoji',
           'NotoJP',
           'NotoTibetan',
           'NotoSymbols1',
           'NotoSymbols2',
           'NotoArabic',
           'NotoSans',
+          'NotoEmoji',
           'NotoMath',
           sans-serif;
 
