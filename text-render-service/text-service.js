@@ -63,6 +63,10 @@ app.post("/render", async (req, res) => {
   .readFileSync(path.join(__dirname, "fonts", "NotoSansJP-Regular.otf"))
   .toString("base64");
 
+  const emojiFont = fs
+  .readFileSync(path.join(__dirname, "fonts", "NotoEmoji-Regular.ttf"))
+  .toString("base64");
+
   const tibetanFont = fs
   .readFileSync(path.join(__dirname, "fonts", "NotoSansTibetan-Regular.ttf"))
   .toString("base64");
@@ -97,6 +101,11 @@ app.post("/render", async (req, res) => {
       }
 
       @font-face {
+        font-family: 'NotoEmoji';
+        src: url(data:font/ttf;base64,${emojiFont}) format('truetype');
+      }
+
+      @font-face {
         font-family: 'NotoJP';
         src: url(data:font/otf;base64,${jpFont}) format('opentype');
       }
@@ -118,6 +127,7 @@ app.post("/render", async (req, res) => {
 
       #name {
         font-family:
+          'NotoEmoji',
           'NotoJP',
           'NotoTibetan',
           'NotoSymbols1',
